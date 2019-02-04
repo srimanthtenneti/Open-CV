@@ -1,0 +1,40 @@
+#### Info ####
+This is an expample from open-cv website.But the example had issues so this is the working example ok KNN.
+#### About KNN ####
+This is a classification algorithm. 
+In this example we have two families red and blue. Red is denoted with 0 and blue with 1.
+If there is a newcomer KNN will help to predict if he is red or blue.
+#### Python code ####
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# We need data to train our model that we dont have so we have to create some sample data:
+trainData = np.random.randint(0,100,(25,2)).astype(np.float32)
+responses = np.random.randint(0,2,(25,1)).astype(np.float32)
+red = trainData[responses.ravel()==0]
+plt.scatter(red[:,0],red[:,1],80,'r','^')
+blue = trainData[responses.ravel()==1]
+plt.scatter(blue[:,0],blue[:,1],80,'b','s')
+# Now adding the new comer (only one )
+newcomer = np.random.randint(0,100,(1,2)).astype(np.float32)
+plt.scatter(newcomer[:,0],newcomer[:,1],80,'g','o')
+knn = cv2.ml.KNearest_create()
+knn.train(trainData,cv2.ml.ROW_SAMPLE,responses)
+ret , results , neighbours , distance = knn.findNearest(newcomer,3)
+print("Results:",results,"\n")
+print("Neighbours:",neighbours,"\n")
+print("Distance:",distance,"\n")
+plt.show()
+
+#### End of Code ####
+Note:
+----
+If you want to add more than 1 new comer for say 20 newcomers then do this:
+newcomer = np.random.randint(0,100,(20,2)).astype(np.float32)
+
+Result:
+______
+
+The result we get is a scatter plot.So check 3 neighbours of the green blip.If Majority is blue then its blue else if majority is red then
+its red.
